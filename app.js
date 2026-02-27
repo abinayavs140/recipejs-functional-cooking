@@ -95,3 +95,53 @@ const renderRecipes = (recipesToRender) => {
 
 // Step 4.4: Initialize App
 renderRecipes(recipes);
+
+let currentFilter = "all";
+let currentSort = "none";
+const filterRecipes = (recipes, filterType) => {
+    if (filterType === "all") return recipes;
+
+    if (filterType === "quick") {
+        return recipes.filter(recipe => recipe.time < 30);
+    }
+
+    return recipes.filter(recipe => recipe.difficulty === filterType);
+};
+const sortRecipes = (recipes, sortType) => {
+    const recipesCopy = [...recipes]; // prevent mutation
+
+    if (sortType === "name") {
+        return recipesCopy.sort((a, b) =>
+            a.title.localeCompare(b.title)
+        );
+    }
+
+    if (sortType === "time") {
+        return recipesCopy.sort((a, b) =>
+            a.time - b.time
+        );
+    }
+
+    return recipesCopy;
+};
+const updateDisplay = () => {
+    const filtered = filterRecipes(recipes, currentFilter);
+    const sorted = sortRecipes(filtered, currentSort);
+    renderRecipes(sorted);
+};
+const filterButtons = document.querySelectorAll('[data-filter]');
+const sortButtons = document.querySelectorAll('[data-sort]');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentFilter = button.dataset.filter;
+        updateDisplay();
+    });
+});
+
+sortButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentSort = button.dataset.sort;
+        updateDisplay();
+    });
+});
