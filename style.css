@@ -101,3 +101,12 @@ main {
     background-color: #f8d7da;
     color: #721c24;
 }
+
+.steps-container,
+.ingredients-container {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
